@@ -1,0 +1,13 @@
+﻿<Project Sdk="Microsoft.NET.Sdk.Web">
+
+  <PropertyGroup>
+    <TargetFramework>netcoreapp3.1</TargetFramework>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\WebAPICoreSampleDemonstration2002.BusinessService\WebAPICoreSampleDemonstration2002.BusinessService.csproj" />
+    <ProjectReference Include="..\WebAPICoreSampleDemonstration2002.Data\WebAPICoreSampleDemonstration2002.Data.csproj" />
+  </ItemGroup>
+
+
+</Project>
