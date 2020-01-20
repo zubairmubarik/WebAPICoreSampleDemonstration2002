@@ -11,3 +11,7 @@ DI is used in 3 ways in Startup.ConfigureServices
   ILoggerFactory Serilog for Microsoft.Extensions.Logging
 
 # Async programing
+
+
+# IHTTPClientFactory vs ClientService
+Idea to use HttpClientFactory was to make use of the functionality available for Retry and Fault Handling.
