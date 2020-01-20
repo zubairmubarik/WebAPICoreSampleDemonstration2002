@@ -7,3 +7,4 @@ DI is used in 3 ways in Startup.ConfigureServices
   services.AddScoped<IMyDependency, MyDependency>();
   services.AddTransient<IAsyncService<User>, ClientService>();  
   services.AddSingleton<IOperationSingleton, Operation>();
+# Use of Asyn programing
