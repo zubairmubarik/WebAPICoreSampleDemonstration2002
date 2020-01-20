@@ -9,8 +9,8 @@ namespace WebAPICoreSampleDemonstration2002.BusinessService.Interfaces
         T Get(int id);
         IList<T> GetAsync();
         int Post(T item);
-        T Put(T item, int id);
+        T Put(int id, T item);
+        T Patch(int id, T item);
         bool Remove(int id);
-
     }
 }

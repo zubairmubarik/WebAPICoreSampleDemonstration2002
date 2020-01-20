@@ -14,7 +14,7 @@ namespace WebAPICoreSampleDemonstration2002.BusinessService
     public class ClientService : IAsyncService<User>
     {
         private readonly HttpClient _httpClient; /* As Singleton */
-       
+
         #region Public Methods
         public ClientService()
         {
@@ -23,47 +23,50 @@ namespace WebAPICoreSampleDemonstration2002.BusinessService
 
         public async Task<IEnumerable<User>> GetAsync()
         {
-            return await GetUsers();
+            var responseString = await GetUsers();
+            return JsonConvert.DeserializeObject<IEnumerable<User>>(responseString);
         }
 
         public async Task<string> GetAsync(int id)
         {
             return await GetUser(id);
         }
-
-        public Task<HttpResponseMessage> PutAsync()
-        {
-            throw new NotImplementedException();
-        }
-
-        public Task<HttpResponseMessage> PatchAsync()
-        {
-            throw new NotImplementedException();
-        }
-
-        public Task<HttpResponseMessage> DeleteAsync()
-        {
-            throw new NotImplementedException();
-        }
-
-
+        
         public async Task<string> PostAsync(User value)
         {
-            string payload = JsonConvert.SerializeObject(value);                    
+            string payload = JsonConvert.SerializeObject(value);
             // TODO: Write Exception Handling in below code
             return await PostUser(payload);
         }
+
+        public async Task<string> PutAsync(int id, User value)
+        {
+            string payload = JsonConvert.SerializeObject(value);
+            // TODO: Write Exception Handling in below code
+            return await PutUser(id, payload);
+        }
+
+        public async Task<User> PatchAsync(int id, string payload)
+        {
+            // TODO: Write Exception Handling in below code
+            var responseString = await PatchUser(id, payload);
+            return JsonConvert.DeserializeObject<User>(responseString);
+        }
+
+        public async Task<HttpResponseMessage> DeleteAsync(int id)
+        {
+            return await DeleteUser(id);
+        }
+
         #endregion
 
         #region Private Methods
 
-        private async Task<IEnumerable<User>> GetUsers()
+        private async Task<string> GetUsers()
         {
             var uri = $"{ConstantValues.BaseAddress}/users";
 
-            var responseString = await _httpClient.GetStringAsync(uri);
-
-            return JsonConvert.DeserializeObject<IEnumerable<User>>(responseString);
+            return await _httpClient.GetStringAsync(uri);
         }
 
         /// <summary>
@@ -77,14 +80,14 @@ namespace WebAPICoreSampleDemonstration2002.BusinessService
             var uri = new Uri($"{ConstantValues.BaseAddress}/users/{id}");
 
             var response = string.Empty;
-            using (var client = new HttpClient())
-            {
-                HttpResponseMessage result = await client.GetAsync(uri);
+            //using (var client = new HttpClient())
+            //{
+                HttpResponseMessage result = await _httpClient.GetAsync(uri);
                 if (result.IsSuccessStatusCode)
                 {
                     response = await result.Content.ReadAsStringAsync();
                 }
-            }
+           // }
             return response;
         }
 
@@ -99,6 +102,53 @@ namespace WebAPICoreSampleDemonstration2002.BusinessService
 
                 httpResponse.EnsureSuccessStatusCode(); /* Throws Exception if IsSuccessStausCode is False */
                 return await httpResponse.Content.ReadAsStringAsync();
+            }
+        }
+
+        private async Task<string> PutUser(int id, string payload)
+        {
+            var uri = new Uri($"{ConstantValues.BaseAddress}/users/{id}");
+            HttpContent c = new StringContent(payload, Encoding.UTF8, HTTPContentTypes.ApplicationJson);
+
+            using (var client = new HttpClient())
+            {
+                var httpResponse = await client.PutAsync(uri, c);
+
+                httpResponse.EnsureSuccessStatusCode(); /* Throws Exception if IsSuccessStausCode is False */
+                return await httpResponse.Content.ReadAsStringAsync();
+            }
+        }
+        private async Task<string> PatchUser(int id, string payload)
+        {
+            var uri = new Uri($"{ConstantValues.BaseAddress}/users/{id}");
+            HttpContent c = new StringContent(payload, Encoding.UTF8, HTTPContentTypes.ApplicationJson);
+
+            using (var client = new HttpClient())
+            {
+                var httpResponse = await client.PatchAsync(uri, c);
+
+                httpResponse.EnsureSuccessStatusCode(); /* Throws Exception if IsSuccessStausCode is False */
+                return await httpResponse.Content.ReadAsStringAsync();
+            }
+        }
+        private async Task<HttpResponseMessage> DeleteUser(int id)
+        {
+            var uri = new Uri($"{ConstantValues.BaseAddress}/users/{id}");
+         
+            using (var client = new HttpClient())
+            {
+                try
+                {
+                    var httpResponse = await client.DeleteAsync(uri);
+
+                    httpResponse.EnsureSuccessStatusCode(); /* Throws Exception if IsSuccessStausCode is False */
+
+                    return httpResponse;
+
+                }catch(Exception ex)
+                {
+                    throw ex;
+                }
             }
         }
 

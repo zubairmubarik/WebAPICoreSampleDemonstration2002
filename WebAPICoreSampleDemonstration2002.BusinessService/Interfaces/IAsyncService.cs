@@ -8,17 +8,12 @@ using WebAPICoreSampleDemonstration2002.Data;
 namespace WebAPICoreSampleDemonstration2002.BusinessService.Interfaces
 {
     public interface IAsyncService<T>
-    {
+    {        
         Task<IEnumerable<User>> GetAsync();
         Task<string> GetAsync(int id);
         Task<string> PostAsync(T value);
-
-        Task<HttpResponseMessage> PutAsync();
-
-        Task<HttpResponseMessage> PatchAsync();
-
-        Task<HttpResponseMessage> DeleteAsync();
-
-
+        Task<string> PutAsync(int id, T value);
+        Task<User> PatchAsync(int id, string payload);
+        Task<HttpResponseMessage> DeleteAsync(int id);
     }
 }
