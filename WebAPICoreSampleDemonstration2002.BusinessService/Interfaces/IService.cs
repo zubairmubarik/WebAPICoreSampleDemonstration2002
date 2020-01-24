@@ -7,7 +7,7 @@ namespace WebAPICoreSampleDemonstration2002.BusinessService.Interfaces
     public interface IService <T>
     {
         T Get(int id);
-        IList<T> GetAsync();
+        IList<T> Get();
         int Post(T item);
         T Put(int id, T item);
         T Patch(int id, T item);

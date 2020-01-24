@@ -9,11 +9,11 @@ namespace WebAPICoreSampleDemonstration2002.BusinessService.Interfaces
 {
     public interface IAsyncService<T>
     {        
-        Task<IEnumerable<User>> GetAsync();
+        Task<IEnumerable<T>> GetAsync();
         Task<string> GetAsync(int id);
         Task<string> PostAsync(T value);
         Task<string> PutAsync(int id, T value);
-        Task<User> PatchAsync(int id, string payload);
+        Task<T> PatchAsync(int id, string payload);
         Task<HttpResponseMessage> DeleteAsync(int id);
     }
 }

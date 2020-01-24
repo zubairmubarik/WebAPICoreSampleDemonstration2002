@@ -10,7 +10,9 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
+using WebAPICoreSampleDemonstration2002.API.HttpClientFactory;
 using WebAPICoreSampleDemonstration2002.BusinessService;
+using WebAPICoreSampleDemonstration2002.BusinessService.Extensions;
 using WebAPICoreSampleDemonstration2002.BusinessService.Interfaces;
 using WebAPICoreSampleDemonstration2002.Data;
 
@@ -29,12 +31,21 @@ namespace WebAPICoreSampleDemonstration2002.API
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddControllers();
-            services.AddTransient<IAsyncService<User>, ClientService>();
+            services.AddSingleton<IAsyncService<User>, ClientService>();
+            services.AddTransient<IAsyncService<CommentData>, ClientFactoryService>();
+            /* services.AddScoped<IAsyncService<User>, ClientService>();*/
+
+            services.AddHttpClient(); /* Add IHTTPClientFactory and related services*/
+            services.AddInternalServices();/* Add services from WebAPICoreSampleDemonstration2002.BusinessService.Extensions*/
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
-        public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
-        {            
+        public void Configure(IApplicationBuilder app
+                                                    , IWebHostEnvironment env
+                                                    , ILoggerFactory loggerFactory)
+        {
+            loggerFactory.AddFile("Logs/WEBAPI-{Date}.txt"); /* Log file created with Date.txt in Logs folder*/
+
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();

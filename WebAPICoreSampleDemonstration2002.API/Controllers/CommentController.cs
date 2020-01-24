@@ -1,16 +1,29 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net.Http;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Logging;
+using WebAPICoreSampleDemonstration2002.BusinessService.Interfaces;
+using WebAPICoreSampleDemonstration2002.Data;
 
 // For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 
 namespace WebAPICoreSampleDemonstration2002.API.Controllers
 {
-    [Route("api/[controller]")]
-    public class UserController : Controller
+    [Route("[controller]")]
+    public class CommentController : Controller
     {
+        IService<CommentData> _commentService;
+        ILogger<CommentController> _logger;
+
+        public CommentController(IService<CommentData> commentService, ILogger<CommentController> logger, IHttpClientFactory clientFactory)
+        {
+            _commentService = commentService;
+            _logger = logger;
+        }
+
         // GET: api/<controller>
         [HttpGet]
         public IEnumerable<string> Get()

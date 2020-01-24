@@ -4,6 +4,7 @@ using System.Linq;
 using System.Net.Http;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Logging;
 using Newtonsoft.Json;
 using WebAPICoreSampleDemonstration2002.BusinessService;
 using WebAPICoreSampleDemonstration2002.BusinessService.Interfaces;
@@ -18,13 +19,15 @@ namespace WebAPICoreSampleDemonstration2002.API.Controllers
     {
         //0. Handler to catch REquest + Exception Handling
         //1. Perform all REST operations with HTTPClientFactory 
+        //1.1 Polly Project https://github.com/App-vNext/Polly
         // 2. Nested resources  One level of nested route is available both in Core and Angular
         //    2. Clean Code
         //    3. Auto Mapper
         //    4. Handle Exception
-        //    5. Logger
         //    6. Improve code, indention , comments
-        //    8. Call 1 more attribute from HTTPClientFactory                  
+        //    8. Call 1 more attribute from HTTPClientFactory   
+        // Finish today uptill here
+
 
         //    9. Think about JWT
         //      Write README in details
@@ -50,21 +53,24 @@ namespace WebAPICoreSampleDemonstration2002.API.Controllers
         // Microservciees with nodejs
 
         IAsyncService<User> _clientService;
-        public ClientController(IAsyncService<User> clientService)
+        ILogger<ClientController> _logger;
+        public ClientController(IAsyncService<User> clientService, ILogger<ClientController> logger)
         {
             _clientService = clientService;
+            _logger = logger;
         }
         // GET: <controller>
         [HttpGet]
         public async Task<IEnumerable<User>> Get()
         {
+            _logger.LogInformation("Get List of Users"); /* Test Log information at file path specified at Startup.cs*/
             return await _clientService.GetAsync();
         }
 
         // GET <controller>/5
         [HttpGet("{id}")]
         public async Task<string> Get(int id)
-        {
+        {           
             return await _clientService.GetAsync(id);
         }
 
