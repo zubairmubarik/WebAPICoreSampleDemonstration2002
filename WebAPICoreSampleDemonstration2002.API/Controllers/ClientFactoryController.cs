@@ -15,13 +15,22 @@ namespace WebAPICoreSampleDemonstration2002.API.Controllers
     [Route("[controller]")]
     public class ClientFactoryController : Controller
     {
+        #region Data Members
+
         IAsyncService<CommentData> _clientFactoryService;
         ILogger<ClientController> _logger;
+
+        #endregion
+
+        #region Constructor with Dependency Injection
         public ClientFactoryController(IAsyncService<CommentData> clientFactoryService, ILogger<ClientController> logger)
         {
             _clientFactoryService = clientFactoryService;
             _logger = logger;
         }
+        #endregion
+
+        #region HTTP Verbs
         // GET: <controller>
         [HttpGet]
         public async Task<IEnumerable<CommentData>> Get()
@@ -56,5 +65,6 @@ namespace WebAPICoreSampleDemonstration2002.API.Controllers
         {
             return await _clientFactoryService.DeleteAsync(id);
         }
+        #endregion
     }
 }

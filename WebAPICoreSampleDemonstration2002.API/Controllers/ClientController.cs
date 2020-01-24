@@ -17,53 +17,27 @@ namespace WebAPICoreSampleDemonstration2002.API.Controllers
     [Route("[controller]")]
     public class ClientController : Controller
     {
-        //0. Handler to catch REquest + Exception Handling
-        //1. Perform all REST operations with HTTPClientFactory 
-        //1.1 Polly Project https://github.com/App-vNext/Polly
-        // 2. Nested resources  One level of nested route is available both in Core and Angular
-        //    2. Clean Code
-        //    3. Auto Mapper
-        //    4. Handle Exception
-        //    6. Improve code, indention , comments
-        //    8. Call 1 more attribute from HTTPClientFactory   
-        // Finish today uptill here
+        #region Data Members
 
+        private readonly IAsyncService<User> _clientService;
+        private readonly ILogger<ClientController> _logger;
+        
+        #endregion
 
-        //    9. Think about JWT
-        //      Write README in details
-
-
-        //    10. Back to Anjular 8
-        // Local Storage
-        // Workers
-        // Ng -interceprtor
-        //    11. Complete All remaining attirbutes from this project and Angular 8
-        //  Write Reasme in details
-
-
-        //    12 Think about Azure, JWT
-        //                    13 Make a .NET REST API Core project with Azure
-        //                    14 Make Microservices with Node
-        //                    15Fix old projects
-        //                    16, Clean Projects,and Slides,put on GitHub 
-        //                    17 Prepare for interviews
-        // Learn Async + Wait from Videos
-        // OAuth and Auth0 
-
-        // Microservciees with nodejs
-
-        IAsyncService<User> _clientService;
-        ILogger<ClientController> _logger;
+        #region Constructor with Dependency Injection
         public ClientController(IAsyncService<User> clientService, ILogger<ClientController> logger)
         {
             _clientService = clientService;
             _logger = logger;
+            _logger.LogInformation($"Executing Controller:{this.GetType().Name}");
         }
+        #endregion
+
+        #region HTTP Verbs
         // GET: <controller>
         [HttpGet]
         public async Task<IEnumerable<User>> Get()
-        {
-            _logger.LogInformation("Get List of Users"); /* Test Log information at file path specified at Startup.cs*/
+        {           
             return await _clientService.GetAsync();
         }
 
@@ -102,6 +76,8 @@ namespace WebAPICoreSampleDemonstration2002.API.Controllers
         {
             return await _clientService.DeleteAsync(id);
         }
+
+        #endregion
 
     }
 }

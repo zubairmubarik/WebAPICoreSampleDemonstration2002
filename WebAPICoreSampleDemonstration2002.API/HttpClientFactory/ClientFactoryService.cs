@@ -13,13 +13,18 @@ namespace WebAPICoreSampleDemonstration2002.API.HttpClientFactory
 {
     public class ClientFactoryService : IAsyncService<CommentData>
     {
+        #region Data Members
         private readonly IHttpClientFactory _clientFactory;
+        #endregion
 
+        #region Constructor with Dependency Injection
         public ClientFactoryService(IHttpClientFactory clientFactory)
         {
             _clientFactory = clientFactory;
         }
+        #endregion
 
+        #region Public Service Actions
         public async Task<HttpResponseMessage> DeleteAsync(int id)
         {
             return await DeleteCommentData(id);
@@ -54,6 +59,7 @@ namespace WebAPICoreSampleDemonstration2002.API.HttpClientFactory
 
             return await PutCommentData(id, payload);
         }
+        #endregion
 
         #region Private Methods
 

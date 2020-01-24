@@ -7,22 +7,33 @@ using System.Threading.Tasks;
 using WebAPICoreSampleDemonstration2002.BusinessService.Interfaces;
 using WebAPICoreSampleDemonstration2002.Data;
 using WebAPICoreSampleDemonstration2002.Common.Constants;
+using Microsoft.Extensions.Logging;
 
 
 namespace WebAPICoreSampleDemonstration2002.BusinessService
 {
     public class ClientService : IAsyncService<User>
     {
-        private readonly HttpClient _httpClient; /* As Singleton */
+        #region Data Members
 
-        #region Public Methods
-        public ClientService()
+        private readonly HttpClient _httpClient; /* As Singleton */
+        private readonly ILogger<ClientService> _logger;
+
+        #endregion
+
+        #region Constructor with Dependency Injection
+        public ClientService(ILogger<ClientService> logger)
         {
             _httpClient = new HttpClient();
+            _logger = logger;
+            _logger.LogInformation($"Executing Service:{this.GetType().Name}");
         }
+        #endregion
+
+        #region Public Service Actions
 
         public async Task<IEnumerable<User>> GetAsync()
-        {
+        {           
             var responseString = await GetUsers();
             return JsonConvert.DeserializeObject<IEnumerable<User>>(responseString);
         }
