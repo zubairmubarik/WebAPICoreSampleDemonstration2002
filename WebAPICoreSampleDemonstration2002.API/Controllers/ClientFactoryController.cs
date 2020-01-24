@@ -27,6 +27,7 @@ namespace WebAPICoreSampleDemonstration2002.API.Controllers
         {
             _clientFactoryService = clientFactoryService;
             _logger = logger;
+            _logger.LogInformation($"Executing Controller:{this.GetType().Name}");
         }
         #endregion
 
@@ -64,6 +65,14 @@ namespace WebAPICoreSampleDemonstration2002.API.Controllers
         public async Task<HttpResponseMessage> Delete(int id)
         {
             return await _clientFactoryService.DeleteAsync(id);
+        }
+
+        // Input:  "{  \"name\": \"zubair\" }"
+        // PATCH <controller>/5
+        [HttpPatch("{id}")]
+        public async Task<CommentData> Patch(int id, [FromBody]string value)
+        {
+            return await _clientFactoryService.PatchAsync(id, value);
         }
         #endregion
     }

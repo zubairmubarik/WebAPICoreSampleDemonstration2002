@@ -42,9 +42,10 @@ namespace WebAPICoreSampleDemonstration2002.API.HttpClientFactory
             return responseString;
         }
 
-        public Task<CommentData> PatchAsync(int id, string payload)
+        public async Task<CommentData> PatchAsync(int id, string payload)
         {
-            throw new NotImplementedException();
+            var responseString = await PatchCommentData(id, payload);
+            return JsonConvert.DeserializeObject<CommentData>(responseString);
         }
 
         public  async Task<string> PostAsync(CommentData value)
@@ -139,6 +140,21 @@ namespace WebAPICoreSampleDemonstration2002.API.HttpClientFactory
                 return await httpResponse.Content.ReadAsStringAsync();
             }
         }
+
+        private async Task<string> PatchCommentData(int id, string payload)
+        {
+            var uri = new Uri($"{ConstantValues.BaseAddress}/comments/{id}");
+            HttpContent c = new StringContent(payload, Encoding.UTF8, HTTPContentTypes.ApplicationJson);
+
+            using (var client = _clientFactory.CreateClient())
+            {
+                var httpResponse = await client.PatchAsync(uri, c);
+
+                httpResponse.EnsureSuccessStatusCode(); /* Throws Exception if IsSuccessStausCode is False */
+                return await httpResponse.Content.ReadAsStringAsync();
+            }
+        }
+
         #endregion
     }
 }
