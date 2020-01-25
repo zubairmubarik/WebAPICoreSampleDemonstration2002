@@ -18,3 +18,5 @@ Idea to use HttpClientFactory was to make use of the functionality available for
 
 # Aspnet-Core-Middleware
 https://www.tutorialsteacher.com/core/aspnet-core-middleware
+
+# Cookie Based Web API Authentication.
